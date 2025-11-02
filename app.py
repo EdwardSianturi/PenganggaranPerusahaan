@@ -4,6 +4,7 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import io, base64
 from datetime import datetime
+import os
 
 app = Flask(__name__)
 
@@ -26,7 +27,7 @@ def kontak():
 @app.route('/calculate', methods=['POST'])
 def calculate():
     try:
-        # ambil input (string diformat jadi angka)
+        # Ambil input dari form
         jenis = request.form['jenis']
         penjualan_raw = request.form['penjualan'].replace('.', '').replace(',', '')
         pembelian_raw = request.form.get('pembelian', '').replace('.', '').replace(',', '')
@@ -36,14 +37,14 @@ def calculate():
         pembelian = float(pembelian_raw) if pembelian_raw else 0.0
         biaya = float(biaya_raw) if biaya_raw else 0.0
 
-        # hitung
+        # Perhitungan laba
         laba_kotor = penjualan - pembelian
         laba_bersih = laba_kotor - biaya
         persen = 0.0 if penjualan == 0 else (laba_bersih / penjualan) * 100.0
         kondisi = "UNTUNG" if laba_bersih > 0 else "RUGI"
         warna = "#00B050" if laba_bersih > 0 else "#FF0000"
 
-        # langkah / penjelasan (string)
+        # Langkah perhitungan
         langkah = [
             f"1) Pendapatan (Total penjualan): Rp {penjualan:,.0f}.",
             f"2) Laba Kotor = Pendapatan - Pembelian.",
@@ -53,23 +54,24 @@ def calculate():
             f"4) Persentase = (Laba Bersih ÷ Pendapatan) × 100% = {persen:.2f}%. Kondisi: {kondisi}."
         ]
 
-        # analisis singkat berdasarkan jenis
-        if jenis.lower() == "dagang":
+        # Analisis berdasarkan jenis perusahaan
+        jenis_lower = jenis.lower()
+        if jenis_lower == "dagang":
             analisis = (
                 "Perusahaan dagang berfokus pada pembelian dan penjualan barang. "
                 "Manajemen stok, harga jual, dan efisiensi operasional sangat berpengaruh terhadap laba akhir."
             )
-        elif jenis.lower() == "jasa":
+        elif jenis_lower == "jasa":
             analisis = (
                 "Perusahaan jasa menekankan efisiensi pelayanan dan kepuasan pelanggan "
                 "sebagai kunci menjaga pendapatan yang stabil."
             )
-        elif jenis.lower() == "manufaktur":
+        elif jenis_lower == "manufaktur":
             analisis = (
                 "Perusahaan manufaktur menghasilkan produk melalui proses produksi. "
                 "Efisiensi bahan baku, biaya produksi, dan kontrol mutu sangat penting untuk menjaga keuntungan."
             )
-        elif jenis.lower() == "konstruksi":
+        elif jenis_lower == "konstruksi":
             analisis = (
                 "Perusahaan konstruksi mengandalkan manajemen proyek yang baik. "
                 "Ketepatan waktu, pengendalian biaya, dan kualitas hasil pekerjaan menentukan profitabilitas."
@@ -77,13 +79,14 @@ def calculate():
         else:
             analisis = "Jenis perusahaan belum dikenali. Harap pilih kategori yang sesuai."
 
-        # tips sederhana
-        if kondisi == "UNTUNG":
-            tips = "🎉 Selamat! Usaha Anda dalam kondisi menguntungkan. Pertahankan strategi dan pertimbangkan ekspansi."
-        else:
-            tips = "⚠️ Usaha sedang rugi. Periksa struktur biaya dan upayakan efisiensi."
+        # Tips sederhana
+        tips = (
+            "🎉 Selamat! Usaha Anda dalam kondisi menguntungkan. Pertahankan strategi dan pertimbangkan ekspansi."
+            if kondisi == "UNTUNG"
+            else "⚠️ Usaha sedang rugi. Periksa struktur biaya dan upayakan efisiensi."
+        )
 
-        # grafik
+        # Grafik keuangan
         fig, ax = plt.subplots(figsize=(7, 4))
         kategori = ['Pendapatan', 'Pembelian', 'Biaya', 'Laba Bersih']
         nilai = [penjualan, pembelian, biaya, laba_bersih]
@@ -101,7 +104,6 @@ def calculate():
 
         waktu = datetime.now().strftime("%d-%m-%Y %H:%M:%S")
 
-        # PENTING: kirim semua variabel yang dipakai di template
         return render_template(
             'result.html',
             jenis=jenis.capitalize(),
@@ -111,7 +113,6 @@ def calculate():
             warna=warna,
             langkah=langkah,
             plot_url=plot_url,
-            # berikut variabel numerik untuk substitusi rumus di template
             penjualan=penjualan,
             pembelian=pembelian,
             biaya=biaya,
@@ -121,8 +122,10 @@ def calculate():
         )
 
     except Exception as e:
-        # tampilkan pesan error yang berguna (server-side)
         return f"<h3 style='color:red'>Terjadi kesalahan: {str(e)}</h3><br><a href='/simulasi'>Kembali</a>"
 
+
+# === BAGIAN PENTING UNTUK RENDER ===
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)
