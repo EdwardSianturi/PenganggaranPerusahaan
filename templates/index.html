@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <title>Beranda | Master Budget</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    /* ===== LATAR BELAKANG BERGERAK ===== */
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      transition: background-image 1s ease-in-out;
+      color: white;
+      position: relative;
+      min-height: 100vh;
+    }
+
+    /* Lapisan gelap transparan agar teks tetap jelas */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.4); /* lebih transparan */
+      z-index: -1;
+    }
+
+    /* ===== NAVBAR ===== */
+    .navbar {
+      background: rgba(0, 123, 255, 0.85);
+      color: white;
+      padding: 15px 30px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(6px);
+    }
+
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 1.4rem;
+      font-weight: bold;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+      padding: 0;
+      margin: 0;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      transition: 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: #ffd700;
+    }
+
+    /* ===== HERO TRANSPARAN ===== */
+    .hero-section {
+      text-align: center;
+      padding: 140px 20px 100px;
+      background: rgba(0, 123, 255, 0.25); /* transparan */
+      border-radius: 20px;
+      max-width: 900px;
+      margin: 80px auto;
+      backdrop-filter: blur(6px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+      animation: fadeIn 1s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-section h1 {
+      font-size: 2.8rem;
+      font-weight: 800;
+      margin-bottom: 15px;
+    }
+
+    .hero-section span {
+      color: #ffd700;
+    }
+
+    .hero-section p {
+      font-size: 1.15rem;
+      max-width: 750px;
+      margin: 0 auto 30px;
+      line-height: 1.7;
+      color: #f0f0f0;
+    }
+
+    /* ===== TOMBOL ===== */
+    .btn-primary {
+      background: rgba(0, 123, 255, 0.9);
+      color: white;
+      padding: 14px 35px;
+      border: none;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.3s;
+      text-decoration: none;
+      display: inline-block;
+      box-shadow: 0 4px 10px rgba(0, 123, 255, 0.4);
+    }
+
+    .btn-primary:hover {
+      background: #0056b3;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0, 123, 255, 0.6);
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      text-align: center;
+      padding: 20px;
+      background: rgba(0, 123, 255, 0.8);
+      color: white;
+      font-size: 0.9rem;
+      backdrop-filter: blur(5px);
+    }
+  </style>
+</head>
+<body id="bodyBg">
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="logo">💼 Master Budget</div>
+      <ul class="nav-links">
+        <li><a href="{{ url_for('index') }}">Beranda</a></li>
+        <li><a href="{{ url_for('simulasi') }}">Simulasi</a></li>
+        <li><a href="{{ url_for('tentang') }}">Tentang</a></li>
+        <li><a href="{{ url_for('kontak') }}">Kontak</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <section class="hero-section">
+    <h1>Selamat Datang di <span>Master Budget</span></h1>
+    <p>
+      Sistem perencanaan keuangan cerdas berbasis <b>Python Flask</b> yang membantu Anda
+      menganalisis pendapatan, biaya, dan laba secara otomatis. Kelola anggaran bisnis
+      Anda dengan mudah, cepat, dan akurat!
+    </p>
+    <a href="{{ url_for('simulasi') }}" class="btn-primary">🚀 Mulai Simulasi Sekarang</a>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <p>© 2025 Master Budget | Dibuat Oleh Kelompok 13</p>
+  </footer>
+
+  <!-- ===== SCRIPT BACKGROUND OTOMATIS ===== -->
+  <script>
+    const bg = document.getElementById("bodyBg");
+    const images = [
+      "{{ url_for('static', filename='diagram.jpg') }}",
+      "{{ url_for('static', filename='meeting.jpg') }}",
+      "{{ url_for('static', filename='budget.jpg') }}",
+      "{{ url_for('static', filename='budgeting.jpg') }}"
+    ];
+    let index = 0;
+
+    function changeBackground() {
+      bg.style.backgroundImage = `url(${images[index]})`;
+      index = (index + 1) % images.length;
+    }
+
+    setInterval(changeBackground, 5000);
+    window.onload = changeBackground;
+  </script>
+</body>
+</html>

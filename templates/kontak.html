@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <title>Tim Pengembang | Master Budget</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    /* ====== LATAR & DASAR ====== */
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #bbdefb, #e3f2fd, #bbdefb);
+      background-size: 300% 300%;
+      animation: bgmove 10s infinite alternate;
+    }
+    @keyframes bgmove {
+      0% { background-position: left top; }
+      100% { background-position: right bottom; }
+    }
+
+    /* ====== NAVBAR ====== */
+    .navbar {
+      background: rgba(0, 123, 255, 0.9);
+      color: white;
+      padding: 15px 30px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo {
+      font-size: 1.4rem;
+      font-weight: bold;
+    }
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+      padding: 0;
+      margin: 0;
+    }
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      transition: 0.3s;
+    }
+    .nav-links a:hover {
+      color: #ffd700;
+    }
+
+    /* ====== TIM ====== */
+    main {
+      text-align: center;
+      padding: 60px 20px 80px;
+    }
+    main h2 {
+      color: #007bff;
+      font-size: 1.8rem;
+      margin-bottom: 40px;
+    }
+
+    /* ====== WRAPPER 2 BARIS ====== */
+    .team-row {
+      display: flex;
+      justify-content: center;
+      flex-wrap: nowrap;
+      gap: 30px;
+      margin-bottom: 40px;
+      flex: 1;
+    }
+    @media (max-width: 900px) {
+      .team-row { flex-wrap: wrap; }
+    }
+
+    /* ====== KARTU ANGGOTA ====== */
+    .member-card {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+      overflow: hidden;
+      text-align: center;
+      width: 230px;
+      transition: 0.3s;
+    }
+    .member-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+    }
+    .member-card img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+    }
+    .member-info {
+      padding: 15px 10px 25px;
+    }
+    .member-info h3 {
+      margin: 10px 0 5px;
+      color: #007bff;
+    }
+    .member-info p {
+      font-size: 0.9rem;
+      color: #555;
+    }
+    .btn-profile {
+      margin-top: 10px;
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+      font-weight: 600;
+    }
+    .btn-profile:hover {
+      background: #0056b3;
+    }
+
+    /* ====== MODAL ====== */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .modal-content {
+      background: white;
+      border-radius: 15px;
+      max-width: 450px;
+      width: 90%;
+      padding: 30px;
+      text-align: center;
+      position: relative;
+      animation: fadeIn 0.4s ease-in;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .modal-content img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 15px;
+    }
+    .modal-content h2 {
+      color: #007bff;
+      margin-bottom: 10px;
+    }
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 1.5rem;
+      color: #555;
+      cursor: pointer;
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      text-align: center;
+      padding: 15px;
+      background: rgba(0, 123, 255, 0.9);
+      color: white;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="logo">💼 Master Budget</div>
+      <ul class="nav-links">
+        <li><a href="{{ url_for('index') }}">Beranda</a></li>
+        <li><a href="{{ url_for('simulasi') }}">Simulasi</a></li>
+        <li><a href="{{ url_for('tentang') }}">Tentang</a></li>
+        <li><a href="{{ url_for('kontak') }}">Kontak</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ===== TIM ===== -->
+  <main>
+    <h2>👨‍💻 Tim Pengembang Master Budget</h2>
+
+    <!-- Baris Pertama (4) -->
+    <div class="team-row">
+      <div class="member-card"><img src="{{ url_for('static', filename='agung.jpg') }}"><div class="member-info"><h3>Agung Setyabudi</h3><p>Management</p><button class="btn-profile" onclick="openModal('agung')">Lihat Profil</button></div></div>
+      <div class="member-card"><img src="{{ url_for('static', filename='elman.jpg') }}"><div class="member-info"><h3>Elman Mariuz Zebua</h3><p>Management</p><button class="btn-profile" onclick="openModal('elman')">Lihat Profil</button></div></div>
+      <div class="member-card"><img src="{{ url_for('static', filename='christ.jpg') }}"><div class="member-info"><h3>Christ Yedija Imanuel</h3><p>Management</p><button class="btn-profile" onclick="openModal('christ')">Lihat Profil</button></div></div>
+      <div class="member-card"><img src="{{ url_for('static', filename='febri.jpg') }}"><div class="member-info"><h3>Febri Wahyu Cahyono</h3><p>Management</p><button class="btn-profile" onclick="openModal('febri')">Lihat Profil</button></div></div>
+    </div>
+
+    <!-- Baris Kedua (3) -->
+    <div class="team-row">
+      <div class="member-card"><img src="{{ url_for('static', filename='yusuf.jpg') }}"><div class="member-info"><h3>Yusuf Sosuluh Zandroto</h3><p>Management</p><button class="btn-profile" onclick="openModal('yusuf')">Lihat Profil</button></div></div>
+      <div class="member-card"><img src="{{ url_for('static', filename='amanda.jpg') }}"><div class="member-info"><h3>Amanda Jesy Jhef</h3><p>Management</p><button class="btn-profile" onclick="openModal('amanda')">Lihat Profil</button></div></div>
+      <div class="member-card"><img src="{{ url_for('static', filename='edward.jpg') }}"><div class="member-info"><h3>Edward Eber Tua Sianturi</h3><p>Informatics</p><button class="btn-profile" onclick="openModal('edward')">Lihat Profil</button></div></div>
+    </div>
+  </main>
+
+  <!-- ===== MODALS ===== -->
+  <div id="modal-agung" class="modal"><div class="modal-content"><span class="close-btn" onclick="closeModal('agung')">&times;</span><img src="{{ url_for('static', filename='agung.jpg') }}"><h2>Agung Setyabudi</h2><p><b>NPM:</b> 220910397</p><p><b>Email:</b> edward@example.com</p><p><b>Jurusan:</b> Manajemen</p><p><b>Keahlian:</b> Flask, Python, Database</p></div></div>
+  <div id="modal-elman" class="modal"><div class="modal-content"><span class="close-btn" onclick="closeModal('elman')">&times;</span><img src="{{ url_for('static', filename='elman.jpg') }}"><h2>Elman Mariuz Zebua</h2><p><b>NPM:</b> 220910245</p><p><b>Email:</b> sinta@example.com</p><p><b>Jurusan:</b> Manajemen</p><p><b>Keahlian:</b> Figma, Adobe XD</p></div></div>
+  <div id="modal-christ" class="modal"><div class="modal-content"><span class="close-btn" onclick="closeModal('christ')">&times;</span><img src="{{ url_for('static', filename='christ.jpg') }}"><h2>Christ Yedija Imanuel</h2><p><b>NPM:</b> 220910270</p><p><b>Email:</b> rahman@example.com</p><p><b>Jurusan:</b> Manajemen</p><p><b>Keahlian:</b> HTML, CSS, JS</p></div></div>
+  <div id="modal-febri" class="modal"><div class="modal-content"><span class="close-btn" onclick="closeModal('febri')">&times;</span><img src="{{ url_for('static', filename='febri.jpg') }}"><h2>Febri Wahyu Cahyono</h2><p><b>NPM:</b> 220910195</p><p><b>Email:</b> agung@example.com</p><p><b>Jurusan:</b> Manajemen</p><p><b>Keahlian:</b> SQL, MySQL, ERD</p></div></div>
+  <div id="modal-yusuf" class="modal"><div class="modal-content"><span class="close-btn" onclick="closeModal('yusuf')">&times;</span><img src="{{ url_for('static', filename='yusuf.jpg') }}"><h2>Yusuf Sosuluh Zandroto</h2><p><b>NPM:</b> 220910202</p><p><b>Email:</b> maya@example.com</p><p><b>Jurusan:</b> Manajemen</p><p><b>Keahlian:</b> UML, BPMN</p></div></div>
+  <div id="modal-amanda" class="modal"><div class="modal-content"><span class="close-btn" onclick="closeModal('amanda')">&times;</span><img src="{{ url_for('static', filename='amanda.jpg') }}"><h2>Amanda Jesy Jhef</h2><p><b>NPM:</b> 220910326</p><p><b>Email:</b> andri@example.com</p><p><b>Jurusan:</b> Manajemen</p><p><b>Keahlian:</b> Testing, Debugging</p></div></div>
+  <div id="modal-edward" class="modal"><div class="modal-content"><span class="close-btn" onclick="closeModal('edward')">&times;</span><img src="{{ url_for('static', filename='edward.jpg') }}"><h2>Edward Eber Tua sianturi</h2><p><b>NPM:</b> 220210140</p><p><b>Email:</b> lia@example.com</p><p><b>Jurusan:</b> Informatika</p><p><b>Keahlian:</b> Agile, Scrum</p></div></div>
+
+  <footer>
+    <p>© 2025 Master Budget | Dikembangkan oleh Tim Sistem Informasi</p>
+  </footer>
+
+  <script>
+    function openModal(id) { document.getElementById("modal-" + id).style.display = "flex"; }
+    function closeModal(id) { document.getElementById("modal-" + id).style.display = "none"; }
+    window.onclick = function(e){
+      document.querySelectorAll('.modal').forEach(m => {
+        if(e.target === m){ m.style.display="none"; }
+      });
+    };
+  </script>
+</body>
+</html>

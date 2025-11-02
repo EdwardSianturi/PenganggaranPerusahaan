@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <title>Tentang Sistem | Master Budget</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    /* ====== LATAR BELAKANG ====== */
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background-image: url("{{ url_for('static', filename='tentang.jpg') }}");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      color: white;
+      position: relative;
+    }
+
+    /* Lapisan transparan agar teks tetap terbaca */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.55);
+      z-index: -1;
+    }
+
+    /* ====== NAVBAR ====== */
+    .navbar {
+      background: rgba(0, 123, 255, 0.9);
+      color: white;
+      padding: 15px 30px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 1.4rem;
+      font-weight: bold;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+      padding: 0;
+      margin: 0;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      transition: 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: #ffd700;
+    }
+
+    /* ====== KONTEN TENGAH ====== */
+    .about-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 85vh;
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    .about-card {
+      background: rgba(255, 255, 255, 0.9);
+      color: #222;
+      max-width: 800px;
+      width: 100%;
+      padding: 50px 40px;
+      border-radius: 20px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+      animation: fadeIn 1s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .about-card h2 {
+      color: #007bff;
+      margin-bottom: 20px;
+      font-size: 1.9rem;
+    }
+
+    .about-card p {
+      margin-bottom: 15px;
+      line-height: 1.7;
+      font-size: 1.05rem;
+    }
+
+    /* ====== TOMBOL ====== */
+    .about-card .btn-secondary {
+      display: inline-block;
+      padding: 12px 30px;
+      margin-top: 20px;
+      border: 2px solid #007bff;
+      border-radius: 10px;
+      color: #007bff;
+      background: transparent;
+      font-weight: 600;
+      text-decoration: none;
+      transition: 0.3s ease-in-out;
+    }
+
+    .about-card .btn-secondary:hover {
+      background: #007bff;
+      color: white;
+      box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+    }
+
+    /* ====== FOOTER ====== */
+    footer {
+      text-align: center;
+      padding: 15px;
+      background: rgba(0, 123, 255, 0.9);
+      color: white;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="logo">💼 Master Budget</div>
+      <ul class="nav-links">
+        <li><a href="{{ url_for('index') }}">Beranda</a></li>
+        <li><a href="{{ url_for('simulasi') }}">Simulasi</a></li>
+        <li><a href="{{ url_for('tentang') }}">Tentang</a></li>
+        <li><a href="{{ url_for('kontak') }}">Kontak</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ===== ISI HALAMAN ===== -->
+  <main class="about-container">
+    <section class="about-card">
+      <h2>🌐 Tentang Website Master Budget</h2>
+      <p><b>Master Budget</b> merupakan <b>website simulasi keuangan</b> yang dikembangkan secara kolaboratif oleh <b>Kelompok 13</b>. Aplikasi ini dirancang untuk membantu pengguna memahami dan mensimulasikan perencanaan anggaran pada berbagai jenis perusahaan seperti <b>dagang</b>, <b>jasa</b>, <b>manufaktur</b>, dan <b>konstruksi</b>.</p>
+      <p>Website ini dibangun menggunakan <b>Python Flask</b> sebagai backend, serta dilengkapi dengan <b>visualisasi data interaktif</b> berbasis <b>Matplotlib</b> untuk menampilkan hasil perhitungan secara grafis. Dengan sistem ini, pengguna dapat melihat perbandingan antara pendapatan, pembelian, biaya operasional, dan laba bersih secara otomatis.</p>
+      <p>Melalui proyek ini, <b>Kelompok 13</b> berupaya menghadirkan media pembelajaran interaktif yang menggabungkan logika perhitungan keuangan dan teknologi web, guna meningkatkan pemahaman praktis tentang manajemen anggaran perusahaan.</p>
+      <a href="{{ url_for('index') }}" class="btn-secondary">⬅️ Kembali ke Beranda</a>
+    </section>
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <p>© 2025 Master Budget | Dikembangkan Bersama oleh Kelompok 13</p>
+  </footer>
+</body>
+</html>

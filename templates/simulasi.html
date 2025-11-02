@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <title>Simulasi Perhitungan | Master Budget</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    body {
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      transition: background-image 1s ease-in-out;
+      color: white;
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.55);
+      z-index: -1;
+    }
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body id="bodyBg">
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="logo">💼 Master Budget</div>
+      <ul class="nav-links">
+        <li><a href="{{ url_for('index') }}">Beranda</a></li>
+        <li><a href="{{ url_for('simulasi') }}">Simulasi</a></li>
+        <li><a href="{{ url_for('tentang') }}">Tentang</a></li>
+        <li><a href="{{ url_for('kontak') }}">Kontak</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <section class="hero-content" style="text-align:center;padding:60px 20px 20px;">
+    <h1>Simulasi Perhitungan Keuangan</h1>
+    <p>Masukkan data di bawah ini untuk menganalisis kondisi keuangan perusahaan Anda.</p>
+  </section>
+
+  <main class="container">
+    <div class="card">
+      <h2>📊 Input Data Keuangan</h2>
+      <form action="/calculate" method="post">
+        <label>Jenis Perusahaan</label>
+        <select name="jenis" id="jenis" required onchange="togglePembelian()">
+          <option value="dagang">Dagang</option>
+          <option value="jasa">Jasa</option>
+          <option value="manufaktur">Manufaktur</option>
+          <option value="konstruksi">Konstruksi</option>
+        </select>
+
+        <label>Pendapatan (Rp)</label>
+        <input type="text" name="penjualan" placeholder="Contoh: 2.000.000" required oninput="formatRupiah(this)">
+
+        <div id="pembelian-group">
+          <label>Pembelian (Rp)</label>
+          <input type="text" name="pembelian" placeholder="Contoh: 1.500.000" oninput="formatRupiah(this)">
+        </div>
+
+        <label>Biaya Operasional (Rp)</label>
+        <input type="text" name="biaya" placeholder="Contoh: 300.000" required oninput="formatRupiah(this)">
+
+        <button type="submit" class="btn-primary">💡 Hitung Anggaran</button>
+      </form>
+    </div>
+  </main>
+
+  <footer>
+    <p>© 2025 Sistem Penganggaran | Dibuat Oleh Kelompok 13 </p>
+  </footer>
+
+  <script>
+    function formatRupiah(input) {
+      let value = input.value.replace(/\D/g, "");
+      if (value === "") return input.value = "";
+      input.value = new Intl.NumberFormat("id-ID").format(value);
+    }
+
+    function togglePembelian() {
+      const jenis = document.getElementById("jenis").value;
+      const pembelianGroup = document.getElementById("pembelian-group");
+      if (jenis === "jasa" || jenis === "konstruksi") {
+        pembelianGroup.classList.add("hidden");
+        pembelianGroup.querySelector("input").value = "";
+      } else {
+        pembelianGroup.classList.remove("hidden");
+      }
+    }
+
+    // Background otomatis berganti
+    const bg = document.getElementById("bodyBg");
+    const images = [
+      "{{ url_for('static', filename='pasar.jpg') }}",
+      "{{ url_for('static', filename='jasa.jpg') }}",
+      "{{ url_for('static', filename='manufaktur.jpg') }}",
+      "{{ url_for('static', filename='konstruksi.jpg') }}"
+    ];
+    let index = 0;
+
+    function changeBackground() {
+      bg.style.backgroundImage = `url(${images[index]})`;
+      index = (index + 1) % images.length;
+    }
+
+    setInterval(changeBackground, 5000);
+    window.onload = () => {
+      togglePembelian();
+      changeBackground();
+    };
+  </script>
+</body>
+</html>

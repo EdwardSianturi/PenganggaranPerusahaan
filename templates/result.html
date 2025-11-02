@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>📘 Hasil Simulasi | Master Budget</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: #eef2f7;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* ===== NAVBAR ===== */
+    .navbar {
+      background: rgba(0, 123, 255, 0.95);
+      color: white;
+      padding: 15px 30px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .logo {
+      font-size: 1.3rem;
+      font-weight: bold;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+      padding: 0;
+      margin: 0;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      transition: 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: #ffd700;
+    }
+
+    /* ===== ISI KONTEN ===== */
+    .result-container {
+      max-width: 1000px;
+      margin: 50px auto;
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+      padding: 40px 50px;
+      line-height: 1.8;
+    }
+
+    h1 {
+      text-align: center;
+      color: #0066cc;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    h2 {
+      color: #0066cc;
+      border-left: 6px solid #0066cc;
+      padding-left: 10px;
+      margin-top: 40px;
+    }
+
+    .highlight {
+      color: {{ warna }};
+      font-weight: 700;
+    }
+
+    .summary {
+      text-align: center;
+      background: linear-gradient(90deg, #e3f2fd, #bbdefb);
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 25px;
+    }
+
+    .summary p {
+      margin: 6px 0;
+      font-size: 1.1rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      background: #f8faff;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    th, td {
+      border: 1px solid #dce3f0;
+      padding: 12px 15px;
+      text-align: left;
+    }
+
+    th {
+      background: #007bff;
+      color: white;
+      font-weight: 600;
+    }
+
+    tr:nth-child(even) {
+      background: #f2f7ff;
+    }
+
+    tr:hover {
+      background: #e3f2fd;
+    }
+
+    .formula {
+      background: #f1f8ff;
+      border-left: 5px solid #007bff;
+      padding: 12px 18px;
+      margin: 10px 0;
+      border-radius: 6px;
+      font-family: "Consolas", monospace;
+      color: #0056b3;
+    }
+
+    .example {
+      background: #e8f5e9;
+      border-left: 5px solid #28a745;
+      padding: 12px 18px;
+      margin: 10px 0;
+      border-radius: 6px;
+      font-family: "Consolas", monospace;
+      color: #1b5e20;
+    }
+
+    .chart {
+      text-align: center;
+      margin: 40px 0;
+    }
+
+    .chart img {
+      border-radius: 12px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+    }
+
+    .tips {
+      background: #fff8e1;
+      border-left: 5px solid #ffc107;
+      padding: 15px 20px;
+      border-radius: 8px;
+    }
+
+    .btn-secondary {
+      display: block;
+      width: fit-content;
+      margin: 35px auto 0;
+      padding: 14px 35px;
+      background: #007bff;
+      color: white;
+      text-decoration: none;
+      border-radius: 12px;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+
+    .btn-secondary:hover {
+      background: #0056b3;
+    }
+
+    footer {
+      text-align: center;
+      padding: 15px;
+      background: #007bff;
+      color: white;
+      font-size: 0.9rem;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="logo">💼 Master Budget</div>
+      <ul class="nav-links">
+        <li><a href="{{ url_for('index') }}">Beranda</a></li>
+        <li><a href="{{ url_for('simulasi') }}">Simulasi</a></li>
+        <li><a href="{{ url_for('tentang') }}">Tentang</a></li>
+        <li><a href="{{ url_for('kontak') }}">Kontak</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ===== KONTEN UTAMA ===== -->
+  <div class="result-container">
+    <h1>💰 Hasil Simulasi Keuangan</h1>
+
+    <div class="summary">
+      <p><b>Jenis Perusahaan:</b> {{ jenis }}</p>
+      <p><b>Kondisi Keuangan:</b> <span class="highlight">{{ kondisi }}</span></p>
+      <p><b>Waktu Analisis:</b> {{ waktu }}</p>
+    </div>
+
+    <h2>📋 Tabel Ringkasan Keuangan</h2>
+    <table>
+      <tr><th>Keterangan</th><th>Nilai (Rp)</th></tr>
+      <tr><td><b>Pendapatan</b></td><td>{{ "{:,.0f}".format(penjualan|float) }}</td></tr>
+      {% if jenis.lower() not in ['jasa', 'konstruksi'] %}
+      <tr><td><b>Pembelian</b></td><td>{{ "{:,.0f}".format(pembelian|float) }}</td></tr>
+      {% endif %}
+      <tr><td><b>Biaya Operasional</b></td><td>{{ "{:,.0f}".format(biaya|float) }}</td></tr>
+      <tr><td><b>Laba Bersih</b></td><td>{{ "{:,.0f}".format(laba_bersih|float) }}</td></tr>
+      <tr><td><b>Persentase {{ 'Keuntungan' if laba_bersih > 0 else 'Kerugian' }}</b></td><td>{{ "%.2f"|format(persen) }}%</td></tr>
+    </table>
+
+    <h2>📘 Tahapan Perhitungan dan Rumus</h2>
+    <ol>
+      <li><b>Pendapatan:</b> Total hasil penjualan perusahaan.</li>
+      <div class="formula">Pendapatan = {{ "{:,.0f}".format(penjualan|float) }}</div>
+
+      {% if jenis.lower() not in ['jasa', 'konstruksi'] %}
+      <li><b>Laba Kotor:</b> Pendapatan dikurangi pembelian.</li>
+      <div class="formula">Laba Kotor = Pendapatan - Pembelian</div>
+      <div class="example">
+        = {{ "{:,.0f}".format(penjualan|float) }} - {{ "{:,.0f}".format(pembelian|float) }}  
+        = {{ "{:,.0f}".format(penjualan|float - pembelian|float) }}
+      </div>
+      {% else %}
+      <li><b>Laba Kotor:</b> Untuk jenis {{ jenis }}, laba kotor = pendapatan.</li>
+      <div class="example">= {{ "{:,.0f}".format(penjualan|float) }}</div>
+      {% endif %}
+
+      <li><b>Laba Bersih:</b> Laba Kotor dikurangi biaya operasional.</li>
+      <div class="formula">Laba Bersih = Laba Kotor - Biaya Operasional</div>
+      <div class="example">
+        = {{ "{:,.0f}".format(penjualan|float - pembelian|float) }} - {{ "{:,.0f}".format(biaya|float) }}  
+        = {{ "{:,.0f}".format(laba_bersih|float) }}
+      </div>
+
+      <li><b>Persentase Keuntungan/Kerugian:</b> (Laba Bersih ÷ Pendapatan) × 100%</li>
+      <div class="example">
+        = ({{ "{:,.0f}".format(laba_bersih|float) }} ÷ {{ "{:,.0f}".format(penjualan|float) }}) × 100%  
+        = {{ "%.2f" | format(persen) }}%
+      </div>
+    </ol>
+
+    <h2>📊 Visualisasi Keuangan</h2>
+    <div class="chart">
+      <img src="data:image/png;base64,{{ plot_url }}" alt="Grafik Keuangan" width="100%">
+    </div>
+
+    <h2>🧩 Analisis</h2>
+    <p>{{ analisis }}</p>
+
+    <h2>💡 Saran</h2>
+    <div class="tips">
+      <p>{{ tips }}</p>
+    </div>
+
+    <a href="{{ url_for('simulasi') }}" class="btn-secondary">🔄 Ulangi Simulasi</a>
+  </div>
+
+  <footer>
+    © 2025 Master Budget | Kelompok 13
+  </footer>
+</body>
+</html>
